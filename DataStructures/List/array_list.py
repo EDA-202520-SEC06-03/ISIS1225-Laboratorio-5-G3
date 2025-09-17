@@ -4,7 +4,7 @@ def new_list():
 
 
 def get_element(my_list, index):
-    return my_list["elements"][index]
+    return my_list["elements"][index-1]
 
 def size(my_list):
     return my_list["size"]
@@ -115,3 +115,90 @@ def is_present(my_list, element, cmp_function):
         if keyexist:
             return keypos
     return -1
+
+def selection_sort(lst, cmp_function=None):
+    n = size(lst)
+    i = 1
+    while i < n:
+        min_idx = i
+        j = i + 1
+        while j <= n:
+            elem_j = get_element(lst, j)
+            elem_min = get_element(lst, min_idx)
+
+            if cmp_function is None:
+                if elem_j < elem_min:
+                    min_idx = j
+            else:
+                if cmp_function(elem_j, elem_min):
+                    min_idx = j
+            j += 1
+
+        if min_idx != i:
+            val_i = get_element(lst, i)
+            val_min = get_element(lst, min_idx)
+            change_info(lst, i, val_min)
+            change_info(lst, min_idx, val_i)
+
+        i += 1
+def insertion_sort(lst, cmp_function=None):
+    n = size(lst)
+    i = 2
+    while i <= n:
+        key = get_element(lst, i)
+        j = i - 1
+        condition = True
+        while j >= 1 and condition:
+            elem_j = get_element(lst, j)
+            if cmp_function is None:
+                if key < elem_j:
+                    change_info(lst, j + 1, elem_j)
+                    j -= 1
+                else:
+                    condition = False
+            else:
+                if cmp_function(key, elem_j):
+                    change_info(lst, j + 1, elem_j)
+                    j -= 1
+                else:
+                    condition = False
+        change_info(lst, j + 1, key)
+        i += 1
+        
+def shell_sort(lst, cmp_function=None):
+    n = size(lst)
+    gap = n // 2
+
+    while gap > 0:
+        i = gap + 1
+        while i <= n:
+            temp = get_element(lst, i)
+            j = i
+            condition = True
+            while j > gap and condition:
+                elem_j_gap = get_element(lst, j - gap)
+                if cmp_function is None:
+                    if temp < elem_j_gap:
+                        change_info(lst, j, elem_j_gap)
+                        j -= gap
+                    else:
+                        condition = False
+                else:
+                    if cmp_function(temp, elem_j_gap):
+                        change_info(lst, j, elem_j_gap)
+                        j -= gap
+                    else:
+                        condition = False
+            change_info(lst, j, temp)
+            i += 1
+        gap //= 2
+        
+        
+def default_sort_criteria(a, b):
+    return a < b
+
+
+def _cmp(a, b, cmp_function):
+    if cmp_function is None:
+        return default_sort_criteria(a, b)
+    return cmp_function(a, b)
