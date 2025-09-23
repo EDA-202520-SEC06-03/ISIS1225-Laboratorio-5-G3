@@ -153,11 +153,13 @@ def is_empty(my_list):
     return list 
 
 def get_element(my_list, pos):
-    searchpos = 0
+    if pos < 0 or pos >= my_list["size"]:
+        return None
+
     node = my_list["first"]
-    while searchpos < pos:
+    for _ in range(pos):
         node = node["next"]
-        searchpos += 1
+
     return node["info"]
 
 def is_present(my_list, element, cmp_function):
@@ -184,3 +186,129 @@ def last_element(my_list):
     if my_list["size"] == 0:
         return None
     return my_list["last"]["info"]
+
+
+def selection_sort(lst, cmp_function):
+    n = size(lst)
+    i = 0
+    while i < n - 1:
+        min_index = i
+        elem_min = get_element(lst, i)
+
+        j = i + 1
+        while j < n:
+            elem_j = get_element(lst, j)
+            if elem_j is not None and elem_min is not None:
+                if cmp_function(elem_j, elem_min):
+                    elem_min = elem_j
+                    min_index = j
+            j += 1
+
+        exchange(lst, i, min_index)
+        i += 1
+
+
+
+def insertion_sort(lst, cmp_function):
+    n = size(lst)
+    i = 1
+    while i < n:
+        key = get_element(lst, i)
+        j = i - 1
+        stop = False  
+
+        while j >= 0 and not stop:
+            elem_j = get_element(lst, j)
+            if elem_j is not None and cmp_function(key, elem_j):
+                exchange(lst, j, j + 1)
+                j -= 1
+            else:
+                stop = True
+        i += 1
+
+
+
+def shell_sort(lst, cmp_function):
+    n = size(lst)
+    gap = n // 2
+
+    while gap > 0:
+        i = gap
+        while i < n:
+            temp = get_element(lst, i)
+            j = i
+            stop = False
+
+            while j >= gap and not stop:
+                elem_j_gap = get_element(lst, j - gap)
+                if elem_j_gap is not None and cmp_function(temp, elem_j_gap):
+                    exchange(lst, j, j - gap)
+                    j -= gap
+                else:
+                    stop = True
+            i += 1
+        gap //= 2
+
+# --- Merge Sort ---
+def merge_sort(lst, cmp_function):
+    n = size(lst)
+    if n > 1:
+        mid = n // 2
+        left = sub_list(lst, 0, mid)
+        right = sub_list(lst, mid, n - mid)
+
+        merge_sort(left, cmp_function)
+        merge_sort(right, cmp_function)
+
+        i = j = k = 0
+        while i < size(left) and j < size(right):
+            elem_left = get_element(left, i)
+            elem_right = get_element(right, j)
+
+            if elem_left is not None and elem_right is not None:
+                if cmp_function(elem_left, elem_right):
+                    change_info(lst, k, elem_left)
+                    i += 1
+                else:
+                    change_info(lst, k, elem_right)
+                    j += 1
+            k += 1
+
+        while i < size(left):
+            elem_left = get_element(left, i)
+            if elem_left is not None:
+                change_info(lst, k, elem_left)
+            i += 1
+            k += 1
+
+        while j < size(right):
+            elem_right = get_element(right, j)
+            if elem_right is not None:
+                change_info(lst, k, elem_right)
+            j += 1
+            k += 1
+
+
+def quick_sort(lst, cmp_function):
+    def partition(low, high):
+        pivot = get_element(lst, high)
+        i = low - 1
+        j = low
+        while j < high:
+            elem_j = get_element(lst, j)
+            if elem_j is not None and pivot is not None:
+                if cmp_function(elem_j, pivot) or elem_j == pivot:
+                    i += 1
+                    exchange(lst, i, j)
+            j += 1
+        exchange(lst, i + 1, high)
+        return i + 1
+
+    def quick_sort_recursive(low, high):
+        if low < high:
+            pi = partition(low, high)
+            quick_sort_recursive(low, pi - 1)
+            quick_sort_recursive(pi + 1, high)
+
+    n = size(lst)
+    quick_sort_recursive(0, n - 1)
