@@ -202,3 +202,74 @@ def _cmp(a, b, cmp_function):
     if cmp_function is None:
         return default_sort_criteria(a, b)
     return cmp_function(a, b)
+
+def merge_sort(lst, cmp_function=None):
+    
+    n=size(lst)
+    if n > 1:
+        mid=n//2
+        left= sub_list(lst, 1, mid)
+        right= sub_list(lst, mid + 1, n - mid)
+        merge_sort(left, cmp_function)
+        merge_sort(right, cmp_function)
+        i=j=k=1
+        
+        while i <= size(left) and j <= size(right):
+            elem_left = get_element(left, i)
+            elem_right=get_element(right, j)
+            
+            if _cmp(elem_left, elem_right, cmp_function):
+                change_info(lst, k, elem_left)
+                i+=1
+            else:
+                change_info(lst, k, elem_right)
+                j+=1
+                
+            k+=1
+        
+        while i <= size(left):
+            change_info(lst, k, get_element(left, i))
+            i += 1
+            k += 1
+
+        while j <= size(right):
+            change_info(lst, k, get_element(right, j))
+            j += 1
+            k += 1
+            
+def quick_sort(lst, cmp_function=None):
+    
+    n=size(lst)
+    low=1
+    high=n
+    stack=[(low, high)]
+    
+    while len(stack) >0:
+        low=stack[-1]
+        high=stack[-1]
+        stack=stack[:-1]
+        
+        if low < high:
+            pivot=get_element(lst, high)
+            i=low-1
+            j= low
+            while j < high:
+                if _cmp(get_element(lst,j), pivot, cmp_function):
+                    i += 1
+                    elem_i = get_element(lst, i)
+                    elem_j = get_element(lst, j)
+                    change_info(lst, i, elem_j)
+                    change_info(lst, j, elem_i)
+                j += 1
+            
+            elem_low = get_element(lst, i + 1)
+            elem_high = get_element(lst, high)
+            change_info(lst, i + 1, elem_high)
+            change_info(lst, high, elem_low)
+
+            pi = i + 1
+            stack += [(low, pi - 1)]
+            stack += [(pi + 1, high)]
+
+            
+                
