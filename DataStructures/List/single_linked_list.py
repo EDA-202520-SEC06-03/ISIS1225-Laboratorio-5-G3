@@ -312,3 +312,6 @@ def quick_sort(lst, cmp_function):
 
     n = size(lst)
     quick_sort_recursive(0, n - 1)
+    
+def default_sort_criteria(e1, e2):
+    return e1 < e2
