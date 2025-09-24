@@ -359,19 +359,24 @@ def sort_books(catalog):
     # TODO: cambie el None para completar las opciones para selection_sort, insertion_sort, shell_sort, merge_sort y quick_sort 
 
     if sort_algorithm == 1:
-        sorted_books_s = data_structure.selection_sort(sorted_books, eval_ratings)  
+        data_structure.selection_sort(sorted_books, eval_ratings)
+        sorted_books_s = sorted_books
 
     elif sort_algorithm == 2:
-        sorted_books_s = data_structure.insertion_sort(sorted_books, eval_ratings)
+        data_structure.insertion_sort(sorted_books, eval_ratings)
+        sorted_books_s = sorted_books
 
     elif sort_algorithm == 3:
-        sorted_books_s = data_structure.shell_sort(sorted_books, eval_ratings)
+        data_structure.shell_sort(sorted_books, eval_ratings)
+        sorted_books_s = sorted_books
 
     elif sort_algorithm == 4:
-        sorted_books_s = data_structure.merge_sort(sorted_books, eval_ratings)
+        data_structure.merge_sort(sorted_books, eval_ratings)
+        sorted_books_s = sorted_books
 
     elif sort_algorithm == 5:
-        sorted_books_s = data_structure.quick_sort(sorted_books, eval_ratings)
+        data_structure.quick_sort(sorted_books, eval_ratings)
+        sorted_books_s = sorted_books
 
     end_time = get_time()
     delta = delta_time(start_time, end_time)
